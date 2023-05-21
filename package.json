@@ -1,0 +1,25 @@
+{
+  "name": "@plurali/migrator",
+  "version": "1.0.0",
+  "description": "Migrator from old db schema to the new one",
+  "author": "Liliana <lilianalillyy@gmail.com>",
+  "private": true,
+  "license": "MIT",
+  "engineStrict": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@8.1.1",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.13.0",
+    "axios": "^1.4.0",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "prisma": "^4.13.0",
+    "typescript": "^5.0.4"
+  }
+}
