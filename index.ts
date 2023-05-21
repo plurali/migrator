@@ -50,7 +50,7 @@ export const migrate = async () => {
 
   for (const user of users) {
     let pluralSystem: PluralUserEntry | null = null;
-    let oldMembers: (Omit<OldUserMember, "id"> & { id: string | null })[] = [];
+    let oldMembers: (Omit<OldUserMember, "id" | "slug"> & { id: string | null, slug: string })[] = [];
     let oldFields: (Omit<OldUserField, "id"> & {
       id: string | null;
       position: number;
@@ -92,15 +92,18 @@ export const migrate = async () => {
           ).data ?? [];
 
         for (const pluralMember of pluralMembers) {
-          let oldMember:
-            | (Omit<OldUserMember, "id"> & { id: string | null })
-            | null = await client.oldUserMember.findFirst({
+            let oldMember:
+            | (Omit<OldUserMember, "id" | "slug"> & { id: string | null, slug: string })
+            | null
+          
+            const old = await client.oldUserMember.findFirst({
             where: {
               pluralId: pluralMember.id,
               pluralOwnerId: pluralSystem.id,
             },
           });
-          if (!oldMember) {
+
+          if (!old) {
             oldMember = {
               id: null,
               pluralId: pluralMember.id,
@@ -116,6 +119,11 @@ export const migrate = async () => {
               customDescription: null,
               lastTimeAssetChanged: new Date(),
             };
+          } else {
+            oldMember = {
+                ...old,
+                slug: old.slug ?? createSlug(pluralMember.content.name)
+            }
           }
 
           oldMembers.push(oldMember);
@@ -181,6 +189,7 @@ export const migrate = async () => {
                   createMany: {
                     data: oldMembers.map((old) => ({
                       id: old.id ?? undefined,
+                      slug: old.slug,
                       pluralId: old.pluralId,
                       pluralParentId: old.pluralId,
                       visibility: old.visible
