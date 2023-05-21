@@ -171,6 +171,8 @@ model OldUser {
   customDescription  String?
   visible            Boolean
   lastTimeAssetChanged DateTime @default(now())
+
+  @@map("User")
 }
 
 model OldUserField {
@@ -180,6 +182,8 @@ model OldUserField {
   user          OldUser    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId        String  @db.ObjectId
   visible       Boolean
+
+  @@map("UserField")
 }
 
 model OldUserMember {
@@ -195,4 +199,6 @@ model OldUserMember {
   backgroundImage String?
   customDescription String?
   lastTimeAssetChanged DateTime @default(now())
+
+  @@map("UserMember")
 }
