@@ -191,7 +191,7 @@ export const migrate = async () => {
                       id: old.id ?? undefined,
                       slug: old.slug,
                       pluralId: old.pluralId,
-                      pluralParentId: old.pluralId,
+                      pluralParentId: old.pluralOwnerId,
                       visibility: old.visible
                         ? Visibility.Public
                         : Visibility.Private,
